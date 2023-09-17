@@ -14,8 +14,8 @@ class Exam{
     constructor(weight, answer) {
         this.answer = answer
         this.weight = weight 
-        this.result = 0
         this.exam = []
+        this.result = []
     }
 
     /**
@@ -24,44 +24,79 @@ class Exam{
     */
 
     addExam(exam) {
-        this.exam.push(exam.response)
-        this.exam.push(Object.values(this.answer))
-        this.exam.push(Object.values(this.weight))
-        this.exam.push(exam.student)
+        this.exam.push(exam)
     }
 
     /**
-     * Retorna a nota do aluno
+     * Retorna a nota do aluno.
+     * 
+     * O valor padrão é sempre o primeiro estudante adcionado.
+     * @param {string} student - Nome do estudante.
      */
 
-    getResult() {
-        let responseStudent = this.exam[0]
-        let arrayResponse = this.exam[1]
-        let weight = this.exam[2]
+    getResult(student = this.exam[0].student) {
+        student.toLowerCase()
+        let weigh = Object.values(this.weight)
+        let answer = Object.values(this.answer)
+        let count = 0
 
-        for(let i = 0; i < this.exam[0].length; i++){
-            if(responseStudent[i] === arrayResponse[i]) {
-                this.result += weight[i]
+        //Verifica o estudante passado como parâmetro para o método
+        this.exam.forEach((e) => {
+            if(student == e.student) {
+                let studentAnswer = e.response
+                // compara cada alternativa com as respostas do aluno
+                for(let i = 0; i < answer.length; i++){
+                    studentAnswer[i] === answer[i] ? count += weigh[i] : false
+                }
             }
-        }
+        })
 
-        return `A nota de ${this.exam[3]} é: ${this.result.toFixed(1)}`
+        return `A nota de ${student} é: ${count.toFixed(1)}`
     }
 
     /**
-     * Retorna um Objeto para representar o desempenho do aluno
+     * @returns {string} Retorna o desempenho dos estudantes.
      */
 
     getTable() {
-        const table = {
-            Aluno: this.exam[3],
-            RespostaAluno: this.exam[0],
-            Resposta: this.answer,
-            Peso: this.weight,
-            Nota: this.result.toFixed(1)
-        }
+        let weigh = Object.values(this.weight)
+        let answer = Object.values(this.answer)
+        let count;
+        let tableResults = ""
+        let result = []
 
-        return table
+        this.exam.forEach((e) => {
+            let studentAnswer = Object.values(e.response)
+            count = 0
+            for(let i = 0; i < answer.length; i++){
+                studentAnswer[i] === answer[i] ? count += weigh[i] : false
+            }
+            result.push(count)
+        })
+
+        this.exam.forEach((e, index) => {
+            tableResults += `${e.student}: Nota ${result[index].toFixed(1)}\n`
+        })
+
+        this.result = result
+
+        return tableResults
+    }
+
+    /**
+     * @returns {string} Retorna a maior nota.
+     */
+
+    getMax() {
+        return `A maior nota foi ${this.result.sort((a, b) => b - a)[0].toFixed(1)}`
+    }
+
+    /**
+     * @returns {string} Retorna a menor nota.
+     */
+
+    getMin() {
+        return `A menor nota foi ${this.result.sort((a, b) => a - b)[0].toFixed(1)}`
     }
 }
 

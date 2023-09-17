@@ -26,37 +26,30 @@ const responseStudent = {
     response: ['a', 'b', 'b', 'b', 'b']
 }
 
-exam1.addExam(responseStudent)
-console.log(exam1.getResult())
-console.log(exam1.getTable())
-
-//Criando um novo exame
-console.log("")
-
-const weight2 = {
-    q1: 1,
-    q2: 1,
-    q3: 3,
-    q4: 3,
-    q5: 2
-}
-
-const answer2 = {
-    q1: "a",
-    q2: "c",
-    q3: "a",
-    q4: "b",
-    q5: "d"
-}
-
 const responseStudent2 = {
     student: "Kaique",
-    response: ['a', 'c', 'b', 'b', 'd']
+    response: ['a', 'b', 'a', 'b', 'b']
 }
 
-const exam2 = new Exam(weight2, answer2)
-exam2.addExam(responseStudent2)
+const responseStudent3 = {
+    student: "Lorena",
+    response: ['a', 'b', 'a', 'c', 'd']
+}
 
-console.log(exam2.getResult())
-console.log(exam2.getTable())
+exam1.addExam(responseStudent)
+exam1.addExam(responseStudent2)
+exam1.addExam(responseStudent3)
 
+console.log("Resultado individual")
+
+console.log(exam1.getResult("Kaique"))
+console.log()
+
+console.log("Resultado de todos os estudantes")
+console.log(exam1.getTable())
+
+console.log(exam1.getMax())
+console.log(exam1.getMin())
+console.log()
+
+console.log(exam1)
